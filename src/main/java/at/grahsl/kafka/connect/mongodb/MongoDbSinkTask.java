@@ -215,17 +215,19 @@ public class MongoDbSinkTask extends SinkTask {
                             processorChains.get(MongoDbSinkConnectorConfig.TOPIC_AGNOSTIC_KEY_NAME))
                     .process(doc, record);
                     if(doc.getValueDoc().isPresent()) {
+                        boolean isUpsertEnabled = sinkConfig.getBoolean(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY_UPSERT);
                         docsToWrite.add(writeModelStrategies.getOrDefault(
                                 collectionName, writeModelStrategies.get(MongoDbSinkConnectorConfig.TOPIC_AGNOSTIC_KEY_NAME)
-                            ).createWriteModel(doc,record)
+                            ).createWriteModel(doc,record, isUpsertEnabled)
                         );
                     }
                     else {
                         if(doc.getKeyDoc().isPresent()
                                 && sinkConfig.isDeleteOnNullValues(record.topic())) {
+                            boolean isUpsertEnabled = sinkConfig.getBoolean(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY_UPSERT);
                             docsToWrite.add(deleteOneModelDefaultStrategies.getOrDefault(collectionName,
                                         deleteOneModelDefaultStrategies.get(MongoDbSinkConnectorConfig.TOPIC_AGNOSTIC_KEY_NAME))
-                                            .createWriteModel(doc)
+                                            .createWriteModel(doc, isUpsertEnabled)
                             );
                         } else {
                             LOGGER.error("skipping sink record "+record + "for which neither key doc nor value doc were present");

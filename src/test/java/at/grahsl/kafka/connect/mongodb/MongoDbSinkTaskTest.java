@@ -261,6 +261,7 @@ public class MongoDbSinkTaskTest {
         Map<String,String> props = new HashMap<>();
         props.put(MongoDbSinkConnectorConfig.MONGODB_DOCUMENT_ID_STRATEGY_CONF,BsonOidStrategy.class.getName());
         props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY,ReplaceOneDefaultStrategy.class.getName());
+        props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY_UPSERT, "true");
         sinkTask.start(props);
 
         TopicSettingsAndResults settings = new TopicSettingsAndResults("kafkatopic","kafkatopic",10,0);
@@ -307,6 +308,7 @@ public class MongoDbSinkTaskTest {
         Map<String,String> props = new HashMap<>();
         props.put(MongoDbSinkConnectorConfig.MONGODB_DOCUMENT_ID_STRATEGY_CONF,FullKeyStrategy.class.getName());
         props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY,ReplaceOneDefaultStrategy.class.getName());
+        props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY_UPSERT, "true");
         props.put("topics","blah");
         props.put(MongoDbSinkConnectorConfig.MONGODB_COLLECTIONS_CONF,"blah-collection");
         props.put(MongoDbSinkConnectorConfig.MONGODB_COLLECTION_CONF+"."+"blah","blah-collection");
@@ -364,6 +366,7 @@ public class MongoDbSinkTaskTest {
         Map<String,String> props = new HashMap<>();
         props.put(MongoDbSinkConnectorConfig.MONGODB_DOCUMENT_ID_STRATEGY_CONF,FullKeyStrategy.class.getName());
         props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY,ReplaceOneDefaultStrategy.class.getName());
+        props.put(MongoDbSinkConnectorConfig.MONGODB_WRITEMODEL_STRATEGY_UPSERT, "true");
         props.put(MongoDbSinkConnectorConfig.MONGODB_DELETE_ON_NULL_VALUES,"true");
         props.put("topics","foo");
         props.put(MongoDbSinkConnectorConfig.MONGODB_COLLECTIONS_CONF,"foo-collection");

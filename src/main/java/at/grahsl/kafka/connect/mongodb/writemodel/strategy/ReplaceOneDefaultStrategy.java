@@ -10,11 +10,9 @@ import org.bson.BsonDocument;
 
 public class ReplaceOneDefaultStrategy implements WriteModelStrategy {
 
-    private static final UpdateOptions UPDATE_OPTIONS =
-                                    new UpdateOptions().upsert(true);
-
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled) {
+            UpdateOptions updateOptions = new UpdateOptions().upsert(isUpsertEnabled);
 
         BsonDocument vd = document.getValueDoc().orElseThrow(
                 () -> new DataException("error: cannot build the WriteModel since"
@@ -25,7 +23,7 @@ public class ReplaceOneDefaultStrategy implements WriteModelStrategy {
                 new BsonDocument(DBCollection.ID_FIELD_NAME,
                         vd.get(DBCollection.ID_FIELD_NAME)),
                 vd,
-                UPDATE_OPTIONS);
+                updateOptions);
 
     }
 }

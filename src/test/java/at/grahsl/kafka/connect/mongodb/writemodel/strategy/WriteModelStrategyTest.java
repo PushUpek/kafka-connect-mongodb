@@ -88,7 +88,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 DELETE_ONE_DEFAULT_STRATEGY.createWriteModel(
-                        new SinkDocument(null, new BsonDocument())
+                        new SinkDocument(null, new BsonDocument()), false
                 )
         );
 
@@ -101,7 +101,7 @@ public class WriteModelStrategyTest {
         BsonDocument keyDoc = new BsonDocument("id",new BsonInt32(1004));
 
         WriteModel<BsonDocument> result =
-                DELETE_ONE_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(keyDoc,null));
+                DELETE_ONE_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(keyDoc,null), false);
 
         assertTrue(result instanceof DeleteOneModel,
                 () -> "result expected to be of type DeleteOneModel");
@@ -122,7 +122,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 REPLACE_ONE_DEFAULT_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), null)
+                        new SinkDocument(new BsonDocument(), null), false
                 )
         );
 
@@ -138,7 +138,7 @@ public class WriteModelStrategyTest {
                 .append("email",new BsonString("annek@noanswer.org"));
 
         WriteModel<BsonDocument> result =
-                REPLACE_ONE_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc));
+                REPLACE_ONE_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc), true);
 
         assertTrue(result instanceof ReplaceOneModel,
                 () -> "result expected to be of type ReplaceOneModel");
@@ -165,7 +165,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 REPLACE_ONE_BUSINESS_KEY_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), null)
+                        new SinkDocument(new BsonDocument(), null), false
                 )
         );
 
@@ -177,7 +177,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 REPLACE_ONE_BUSINESS_KEY_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), new BsonDocument())
+                        new SinkDocument(new BsonDocument(), new BsonDocument()), false
                 )
         );
 
@@ -197,7 +197,7 @@ public class WriteModelStrategyTest {
                 .append("active", new BsonBoolean(true));
 
         WriteModel<BsonDocument> result =
-                REPLACE_ONE_BUSINESS_KEY_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc));
+                REPLACE_ONE_BUSINESS_KEY_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc), true);
 
         assertTrue(result instanceof ReplaceOneModel,
                 () -> "result expected to be of type ReplaceOneModel");
@@ -224,7 +224,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 UPDATE_ONE_TIMESTAMPS_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), null)
+                        new SinkDocument(new BsonDocument(), null), false
                 )
         );
 
@@ -240,7 +240,7 @@ public class WriteModelStrategyTest {
                 .append("email",new BsonString("annek@noanswer.org"));
 
         WriteModel<BsonDocument> result =
-                UPDATE_ONE_TIMESTAMPS_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc));
+                UPDATE_ONE_TIMESTAMPS_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc), true);
 
         assertTrue(result instanceof UpdateOneModel,
                 () -> "result expected to be of type UpdateOneModel");
@@ -279,7 +279,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 MONOTONIC_WRITES_DEFAULT_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), null),null
+                        new SinkDocument(new BsonDocument(), null),false
                 )
         );
 
@@ -291,7 +291,7 @@ public class WriteModelStrategyTest {
 
         assertThrows(DataException.class,() ->
                 MONOTONIC_WRITES_DEFAULT_STRATEGY.createWriteModel(
-                        new SinkDocument(new BsonDocument(), null)
+                        new SinkDocument(new BsonDocument(), null), false
                 )
         );
 
@@ -309,7 +309,7 @@ public class WriteModelStrategyTest {
         SinkRecord sinkRecord = new SinkRecord("some-topic",1,null,null,null,null,111);
 
         WriteModel<BsonDocument> result =
-                MONOTONIC_WRITES_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc),sinkRecord);
+                MONOTONIC_WRITES_DEFAULT_STRATEGY.createWriteModel(new SinkDocument(null,valueDoc),sinkRecord, true);
 
         assertTrue(result instanceof UpdateOneModel,
                 () -> "result expected to be of type UpdateOneModel");

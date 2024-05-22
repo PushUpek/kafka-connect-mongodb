@@ -50,11 +50,9 @@ public class MonotonicWritesDefaultStrategy implements WriteModelStrategy {
     public static final String FIELD_PARTITION = "_partition";
     public static final String FIELD_OFFSET = "_offset";
 
-    private static final UpdateOptions UPDATE_OPTIONS =
-            new UpdateOptions().upsert(true);
 
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled) {
         throw new DataException("error: the write model strategy " + MonotonicWritesDefaultStrategy.class.getName()
                 + " needs the SinkRecord's data and thus cannot work on the SinkDocument param alone."
                 + " please use the provided method overloading for this."
@@ -62,7 +60,8 @@ public class MonotonicWritesDefaultStrategy implements WriteModelStrategy {
     }
 
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, SinkRecord record) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, SinkRecord record, boolean isUpsertEnabled) {
+        UpdateOptions updateOptions = new UpdateOptions().upsert(isUpsertEnabled);
 
         BsonDocument vd = document.getValueDoc().orElseThrow(
                 () -> new DataException("error: cannot build the WriteModel since"
@@ -106,7 +105,7 @@ public class MonotonicWritesDefaultStrategy implements WriteModelStrategy {
         return new UpdateOneModel<>(
                 new BsonDocument(DBCollection.ID_FIELD_NAME, vd.get(DBCollection.ID_FIELD_NAME)),
                 conditionalUpdatePipeline,
-                UPDATE_OPTIONS
+                updateOptions
         );
     }
 }

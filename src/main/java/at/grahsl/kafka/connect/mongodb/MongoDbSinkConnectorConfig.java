@@ -84,6 +84,7 @@ public class MongoDbSinkConnectorConfig extends CollectionAwareConfig {
     public static final String MONGODB_CHANGE_DATA_CAPTURE_HANDLER_OPERATIONS_DEFAULT = "c,r,u,d";
     public static final boolean MONGODB_DELETE_ON_NULL_VALUES_DEFAULT = false;
     public static final String MONGODB_WRITEMODEL_STRATEGY_DEFAULT = "at.grahsl.kafka.connect.mongodb.writemodel.strategy.ReplaceOneDefaultStrategy";
+    public static final boolean MONGODB_WRITEMODEL_STRATEGY_UPSERT_DEFAULT = false;
     public static final int MONGODB_MAX_BATCH_SIZE_DEFAULT = 0;
     public static final int MONGODB_RATE_LIMITING_TIMEOUT_DEFAULT = 0;
     public static final int MONGODB_RATE_LIMITING_EVERY_N_DEFAULT = 0;
@@ -141,6 +142,9 @@ public class MongoDbSinkConnectorConfig extends CollectionAwareConfig {
 
     public static final String MONGODB_WRITEMODEL_STRATEGY = "mongodb.writemodel.strategy";
     private static final String MONGODB_WRITEMODEL_STRATEGY_DOC = "how to build the write models for the sink documents";
+
+    public static final String MONGODB_WRITEMODEL_STRATEGY_UPSERT = "mongodb.writemodel.strategy.upsert";
+    private static final String MONGODB_WRITEMODEL_STRATEGY_UPSERT_DOC = "whether or not to use upserts for the write model strategy";
 
     public static final String MONGODB_MAX_BATCH_SIZE = "mongodb.max.batch.size";
     private static final String MONGODB_MAX_BATCH_SIZE_DOC = "maximum number of sink records to possibly batch together for processing";
@@ -267,6 +271,7 @@ public class MongoDbSinkConnectorConfig extends CollectionAwareConfig {
                 .define(MONGODB_CHANGE_DATA_CAPTURE_HANDLER_OPERATIONS, Type.STRING, MONGODB_CHANGE_DATA_CAPTURE_HANDLER_OPERATIONS_DEFAULT, Importance.LOW, MONGODB_CHANGE_DATA_CAPTURE_HANDLER_OPERATIONS_DOC)
                 .define(MONGODB_DELETE_ON_NULL_VALUES, Type.BOOLEAN, MONGODB_DELETE_ON_NULL_VALUES_DEFAULT, Importance.MEDIUM, MONGODB_DELETE_ON_NULL_VALUES_DOC)
                 .define(MONGODB_WRITEMODEL_STRATEGY, Type.STRING, MONGODB_WRITEMODEL_STRATEGY_DEFAULT, Importance.LOW, MONGODB_WRITEMODEL_STRATEGY_DOC)
+                .define(MONGODB_WRITEMODEL_STRATEGY_UPSERT, Type.BOOLEAN, MONGODB_WRITEMODEL_STRATEGY_UPSERT_DEFAULT, Importance.LOW, MONGODB_WRITEMODEL_STRATEGY_UPSERT_DOC)
                 .define(MONGODB_MAX_BATCH_SIZE, Type.INT, MONGODB_MAX_BATCH_SIZE_DEFAULT, ConfigDef.Range.atLeast(0), Importance.MEDIUM, MONGODB_MAX_BATCH_SIZE_DOC)
                 .define(MONGODB_RATE_LIMITING_TIMEOUT, Type.INT, MONGODB_RATE_LIMITING_TIMEOUT_DEFAULT, ConfigDef.Range.atLeast(0), Importance.LOW, MONGODB_RATE_LIMITING_TIMEOUT_DOC)
                 .define(MONGODB_RATE_LIMITING_EVERY_N, Type.INT, MONGODB_RATE_LIMITING_EVERY_N_DEFAULT, ConfigDef.Range.atLeast(0), Importance.LOW, MONGODB_RATE_LIMITING_EVERY_N_DOC)

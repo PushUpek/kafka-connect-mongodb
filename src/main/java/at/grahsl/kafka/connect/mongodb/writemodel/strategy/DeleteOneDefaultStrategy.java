@@ -21,7 +21,7 @@ public class DeleteOneDefaultStrategy implements WriteModelStrategy {
     }
 
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled) {
 
         BsonDocument kd = document.getKeyDoc().orElseThrow(
                 () -> new DataException("error: cannot build the WriteModel since"

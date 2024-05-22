@@ -16,11 +16,9 @@ public class UpdateOneTimestampsStrategy implements WriteModelStrategy {
     public static final String FIELDNAME_MODIFIED_TS = "_modifiedTS";
     public static final String FIELDNAME_INSERTED_TS = "_insertedTS";
 
-    private static final UpdateOptions UPDATE_OPTIONS =
-                                    new UpdateOptions().upsert(true);
-
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled) {
+        UpdateOptions updateOptions = new UpdateOptions().upsert(isUpsertEnabled);
 
         BsonDocument vd = document.getValueDoc().orElseThrow(
                 () -> new DataException("error: cannot build the WriteModel since"
@@ -34,7 +32,7 @@ public class UpdateOneTimestampsStrategy implements WriteModelStrategy {
                         vd.get(DBCollection.ID_FIELD_NAME)),
                 new BsonDocument("$set", vd.append(FIELDNAME_MODIFIED_TS, dateTime))
                         .append("$setOnInsert", new BsonDocument(FIELDNAME_INSERTED_TS, dateTime)),
-                UPDATE_OPTIONS
+                updateOptions
         );
 
     }

@@ -7,10 +7,10 @@ import org.bson.BsonDocument;
 
 public interface WriteModelStrategy {
 
-    WriteModel<BsonDocument> createWriteModel(SinkDocument document);
+    WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled);
 
-    default WriteModel<BsonDocument> createWriteModel(SinkDocument document, SinkRecord record) {
-        return createWriteModel(document);
+    default WriteModel<BsonDocument> createWriteModel(SinkDocument document, SinkRecord record, boolean isUpsertEnabled) {
+        return createWriteModel(document, isUpsertEnabled);
     }
 
 }

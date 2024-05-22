@@ -11,11 +11,9 @@ import org.bson.BsonValue;
 
 public class ReplaceOneBusinessKeyStrategy implements WriteModelStrategy {
 
-    private static final UpdateOptions UPDATE_OPTIONS =
-                                    new UpdateOptions().upsert(true);
-
     @Override
-    public WriteModel<BsonDocument> createWriteModel(SinkDocument document) {
+    public WriteModel<BsonDocument> createWriteModel(SinkDocument document, boolean isUpsertEnabled) {
+        UpdateOptions updateOptions = new UpdateOptions().upsert(isUpsertEnabled);
 
         BsonDocument vd = document.getValueDoc().orElseThrow(
                 () -> new DataException("error: cannot build the WriteModel since"
@@ -32,7 +30,7 @@ public class ReplaceOneBusinessKeyStrategy implements WriteModelStrategy {
 
         vd.remove(DBCollection.ID_FIELD_NAME);
 
-        return new ReplaceOneModel<>((BsonDocument)businessKey, vd, UPDATE_OPTIONS);
+        return new ReplaceOneModel<>((BsonDocument)businessKey, vd, updateOptions);
 
     }
 }
